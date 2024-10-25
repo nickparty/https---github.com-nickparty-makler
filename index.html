@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Форма обратной связи</title>
+    
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        
+        .container {
+    max-width: 500px; /* Максимальная ширина контейнера */
+    width: 100%; /* Ширина 100% для мобильных устройств */
+    margin: 20px auto; /* Центрирование контейнера */
+    padding: 20px; /* Внутренние отступы */
+    background-color: #ffffff; /* Фоновый цвет */
+    border-radius: 8px; /* Скругленные углы */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Тень для глубины */
+}
+
+        form {
+           /*  background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; */
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            margin-top: 10px;
+            display: block;
+            color: #555;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #message {
+            color: green;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 500px) {
+            form {
+                padding: 15px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div id="message" style="color: green;"></div>
+
+        <h2 style="text-align:center;">Маклерлар руйхати</h2>
+
+    <form id="feedbackForm">
+        <label for="FIO">ФИО</label>
+        <input type="text" id="FIO" name="FIO" required><br>
+
+        <label for="Telefon">Телефон раками</label>
+        <input type="text" id="Telefon" placeholder="998(00) 000 00 00" maxlength="12">
+
+        <label for="Telegram">Telegram</label>
+        <input type="text" id="Telegram" name="Telegram"><br>
+
+        <label for="Instagram">Instagram</label>
+        <input type="text" id="Instagram" name="Instagram"><br>
+
+        <label for="Facebook">Facebook</label>
+        <input type="text" id="Facebook" name="Facebook"><br>
+
+        <label for="Youtube">Youtube</label>
+        <input type="text" id="Youtube" name="Youtube"><br>
+
+        <label for="Viloyat">Вилоят:</label>
+    <select id="Viloyat" name="Viloyat" onchange="updateAreas()" required>
+        <option value="">Вилоят танланг</option>
+        <option value="region1">Андижон вилояти</option>
+        <option value="region2">Бухоро вилояти</option>
+        <option value="region3">Фарғона вилояти</option>
+        <option value="region4">Жиззах вилояти</option>
+        <option value="region5">Хоразм вилояти</option>
+        <option value="region6">Наманган вилояти</option>
+        <option value="region7">Навоий вилояти</option>
+        <option value="region8">Қашқадарё вилояти</option>
+        <option value="region9">Қорақалпоғистон Республикаси</option>
+        <option value="region10">Самарқанд вилояти</option>
+        <option value="region11">Сирдарё вилояти</option>
+        <option value="region12">Сурхондарё вилояти</option>
+        <option value="region13">Тошкент вилояти</option>
+        <option value="region14">Тошкент шахар</option>
+    </select>
+
+        <label for="Tuman">Туман:</label>
+    <select id="Tuman" name="Tuman" disabled>
+        <option value="">Туман танланг</option>
+    </select>
+
+        <button type="submit">Қўшиш</button>
+    </form>
+    
+</div>
+
+    
+
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            let viloyatSel = document.getElementById('Viloyat')
+
+            var formData = {
+                Viloyat: viloyatSel.options[viloyatSel.selectedIndex].text,
+                Tuman: document.getElementById('Tuman').value,
+                FIO: document.getElementById('FIO').value,
+                Telefon: document.getElementById('Telefon').value,
+                Telegram: document.getElementById('Telegram').value,
+                Instagram: document.getElementById('Instagram').value,
+                Facebook: document.getElementById('Facebook').value,
+                Youtube: document.getElementById('Youtube').value
+            };
+
+
+            fetch('https://script.google.com/macros/s/AKfycbxm_ygwKl2o8B2f1qjZ3c71EvYW1hBvuxsfnXEKWedmKzVNpd91UPM9Wrl-iEnAVU4e/exec', {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.text())
+                .then(data => {
+                 // Отображаем сообщение об успешном добавлении
+                document.getElementById('message').innerText = 'Сиз кўпроқ қўшишингиз мумкин';
+                document.getElementById('feedbackForm').reset();
+                    alert(data);
+                    document.getElementById('feedbackForm').reset();
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        });
+    </script>
+
+
+<script>
+    const areas = {
+        region1: ['Андижон шаҳри', 'Хонобод шаҳри', 'Андижон тумани', 'Асака тумани', 'Балиқчи тумани', 'Бўстон тумани', 'Булоқбоши тумани', 'Жалақудуқ тумани', 'Избоскан тумани', 'Мархамат тумани', 'Олтинкўл тумани', 'Пахтаобод тумани', 'Улуғнор тумани', 'Хўжаобод тумани', 'Шаҳрихон тумани', 'Қўрғонтепа тумани'],
+        region2: ['Бухоро шаҳар', 'Бухоро тумани', 'Когон шаҳри', 'Когон тумани', 'Олот тумани', 'Пешкў тумани', 'Қоракўл тумани', 'Қоровулбозор тумани', 'Ромитан тумани', 'Шофиркон тумани', 'Вобкент тумани', 'Ғиждувон тумани', 'Жондор тумани'],
+        region3: ['Олтиариқ тумани', 'Бағдод тумани', 'Бешариқ тумани', 'Бувайда тумани', 'Данғара тумани', 'Фарғона тумани', 'Фурқат тумани', 'Қўштепа тумани', '	Қува тумани', 'Риштон тумани', 'Сўх тумани', 'Тошлоқ тумани', 'Учкўприк тумани', 'Ўзбекистон тумани', 'Ёзёвон тумани'],
+        region4: ['Арнасой тумани', 'Бахмал тумани', 'Дўстлик тумани', 'Фориш тумани', 'Ғаллаорол тумани', 'Шароф Рашидов тумани', 'Мирзачўл тумани', 'Пахтакор тумани', 'Янгиобод тумани', 'Зомин тумани', 'Зафаробод тумани', 'Зарбдор тумани'],
+        region5: ['Боғот тумани', 'Гурлан тумани', 'Хонқа тумани', 'Тупроққал’а тумани', 'Хива тумани', 'Қўшкўпир тумани', 'Шовот тумани', 'Урганч тумани', 'Янгиариқ тумани', 'Янгибозор тумани', 'Ҳазорасп тумани'],
+        region6: ['Чортоқ тумани', 'Чуст тумани', 'Косонсой тумани', 'Мингбулоқ тумани', 'Наманган тумани', 'Норин тумани (Ўзбекистон)', 'Поп тумани', 'Тўрақўрғон тумани', 'Учқўрғон тумани', 'Уйчи тумани', 'Янгиқўрғон тумани', 'Давлатобод тумани', 'Янги Наманган тумани'],
+        region7: ['Конимех тумани', 'Кармана тумани', 'Қизилтепа тумани', 'Хатирчи тумани', 'Навбаҳор тумани', 'Нурота тумани', 'Томди тумани', 'Учқудуқ тумани'],
+        region8: ['Деҳқонобод тумани', 'Касби тумани', 'Китоб тумани', 'Косон тумани', 'Кўкдала тумани', 'Миришкор тумани', 'Муборак тумани', 'Нишон тумани', 'Қамаши тумани', 'Қарши тумани', 'Яккабоғ тумани', 'Ғузор тумани', 'Шаҳрисабз тумани', 'Чироқчи тумани'],
+        region9: ['Мангит тумани','Тахиатош тумани', 'Амударё тумани', 'Беруний тумани', 'Чимбой тумани', 'Элликқалъа тумани', 'Кегейли тумани', 'Мўйноқ тумани', 'Нукус тумани', 'Қанликўл тумани', 'Қўнғирот тумани', 'Қораўзак тумани', 'Шуманай тумани', 'Тахтакўпир тумани', 'Тўрткўл тумани', 'Хўжайли тумани'],
+        region10: ['Булунғур тумани', 'Иштихон тумани', 'Жомбой тумани', 'Каттақўрғон тумани', 'Қўшработ тумани', 'Нарпай тумани', 'Нуробод тумани', 'Оқдарё тумани', 'Пахтачи тумани', 'Паяриқ тумани', 'Пастдарғом тумани', 'Самарқанд тумани', 'Тойлоқ тумани', 'Ургут тумани'],
+        region11: ['Оқолтин тумани', 'Боёвут тумани', 'Гулистон тумани', 'Ховос тумани', 'Мирзаобод тумани', 'Сардоба тумани', 'Сайхунобод тумани', 'Сирдарё тумани'],
+        region12: ['Ангор тумани', 'Бандихон тумани', 'Бойсун тумани', 'Денов тумани', 'Жарқўрғон тумани', 'Қизириқ тумани', 'Қумқўрғон тумани', 'Музрабод тумани', 'Олтинсой тумани', 'Сариосиё тумани', 'Шеробод тумани', 'Шўрчи тумани', 'Термиз тумани', 'Узун тумани'],
+        region13: ['Ангрен шаҳри', 'Бекобод шаҳри', 'Олмалиқ шаҳри', 'Оҳангарон шаҳри', 'Нурафшон шаҳри', 'Чирчиқ шаҳри', 'Янгийўл шаҳри', 'Бекобод тумани', 'Бўка тумани', 'Бўстонлиқ тумани', 'Қибрай тумани', 'Қуйи Чирчиқ тумани', 'Оққўрғон тумани', 'Оҳангарон тумани', 'Паркент тумани', 'Пискент тумани', 'Тошкент тумани', 'Зангиота тумани', 'Ўрта Чирчиқ тумани', 'Чиноз тумани', 'Юқори чирчиқ тумани', 'Янгийўл тумани'],
+        region14: ['Бектемир тумани', 'Мирзо Улуғбек тумани', 'Миробод тумани', 'Олмазор тумани', 'Сирғали тумани', 'Учтепа тумани', 'Чилонзор тумани', 'Шайхонтоҳур тумани', 'Юнусобод тумани', 'Яккасарой тумани', 'Янги ҳаёт тумани','Яшнобод тумани' ],
+    };
+
+    function updateAreas() {
+        const regionSelect = document.getElementById('Viloyat');
+        const areaSelect = document.getElementById('Tuman');
+        const selectedRegion = regionSelect.value;
+
+        // Очищаем область
+        areaSelect.innerHTML = '';
+        areaSelect.disabled = true;
+
+        if (selectedRegion && areas[selectedRegion]) {
+            areas[selectedRegion].forEach(area => {
+                const option = document.createElement('option');
+                option.value = area;
+                option.textContent = area;
+                areaSelect.appendChild(option);
+            });
+            areaSelect.disabled = false; // Активируем область
+        } else {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'Сначала выберите регион';
+            areaSelect.appendChild(option);
+        }
+    }
+</script>
+
+
+</body>
+
+</html>
